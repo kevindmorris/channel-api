@@ -18,7 +18,8 @@ class DatabaseConfig {
     CommandLineRunner initDatabase(PostRepository repository) {
 
         return args -> {
-            log.info("Preloading " + repository.save(new Post("Welcome to CHANNEL. This is a preloaded post.")));
+            log.info("Preloading "
+                    + repository.save(new Post("Welcome to CHANNEL.", "This is an initial preloaded post.")));
         };
     }
 }

@@ -1,6 +1,7 @@
 package com.channel.api.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,34 +15,35 @@ import com.channel.api.repository.PostRepository;
 public class PostService {
 
     @Autowired
-    private PostRepository repository;
+    private PostRepository postRepository;
 
-    public Post save(PostDto post) {
-        return repository.save(new Post(post.getContent()));
+    public Post save(PostDto dto) {
+        return postRepository.save(new Post(dto.getTitle(), dto.getBody()));
     }
 
     public List<Post> all() {
-        return repository.findAll();
+        return postRepository.findAll();
     }
 
     public Post get(String id) {
-        return repository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
+        return postRepository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
     }
 
-    public Post update(PostDto post, String id) {
-        return repository.findById(id)
-                .map(p -> {
-                    p.setContent(post.getContent());
-                    return repository.save(p);
-                })
-                .orElseGet(() -> {
-                    post.setId(id);
-                    return repository.save(new Post(post.getContent()));
-                });
+    public Post update(PostDto dto, String id) {
+        return postRepository.findById(id)
+                .map(post -> {
+                    if (Objects.nonNull(dto.getTitle())) {
+                        post.setTitle(dto.getTitle());
+                    }
+                    if (Objects.nonNull(dto.getBody())) {
+                        post.setBody(dto.getBody());
+                    }
+                    return postRepository.save(post);
+                }).orElseThrow(() -> new PostNotFoundException(id));
     }
 
     public void delete(String id) {
-        repository.deleteById(id);
+        postRepository.deleteById(id);
     }
 
 }

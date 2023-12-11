@@ -25,36 +25,36 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class PostController {
 
     @Autowired
-    PostService service;
+    PostService postService;
 
     @Operation(summary = "Get all posts.")
     @GetMapping("/posts")
     public ResponseEntity<List<PostDto>> getPosts() {
-        return ResponseEntity.ok(service.all().stream().map(PostDto::from).collect(Collectors.toList()));
+        return ResponseEntity.ok(postService.all().stream().map(PostDto::toComplex).collect(Collectors.toList()));
     }
 
     @Operation(summary = "Get a post.")
     @GetMapping("/posts/{id}")
     public ResponseEntity<PostDto> getPost(@PathVariable String id) {
-        return ResponseEntity.ok(PostDto.from(service.get(id)));
+        return ResponseEntity.ok(PostDto.toComplex(postService.get(id)));
     }
 
     @Operation(summary = "Create a post.")
     @PostMapping("/posts")
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto post) {
-        return ResponseEntity.ok(PostDto.from(service.save(post)));
+        return ResponseEntity.ok(PostDto.toComplex(postService.save(post)));
     }
 
     @Operation(summary = "Update a post.")
     @PutMapping("posts/{id}")
     public ResponseEntity<PostDto> updatePost(@PathVariable String id, @RequestBody PostDto post) {
-        return ResponseEntity.ok(PostDto.from(service.update(post, id)));
+        return ResponseEntity.ok(PostDto.toComplex(postService.update(post, id)));
     }
 
     @Operation(summary = "Delete a post.")
     @DeleteMapping("posts/{id}")
     public void deletePost(@PathVariable String id) {
-        service.delete(id);
+        postService.delete(id);
     }
 
 }
