@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 public class CommentDto {
 
-    private String id;
+    private Long id;
     private Instant creationDate;
     private String body;
     private PostDto post;

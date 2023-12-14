@@ -1,6 +1,7 @@
 package com.channel.api.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,29 +17,25 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
 
-    public Comment save(CommentDto dto) {
-        Comment comment = new Comment();
-        comment.setBody(dto.getBody());
-        return commentRepository.save(comment);
-    }
-
-    public List<Comment> all() {
+    public List<Comment> getAll() {
         return commentRepository.findAll();
     }
 
-    public Comment get(String id) {
+    public Comment get(Long id) {
         return commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
     }
 
-    public Comment update(CommentDto dto, String id) {
+    public Comment update(Long id, CommentDto commentDto) {
         return commentRepository.findById(id)
                 .map(comment -> {
-                    comment.setBody(dto.getBody());
+                    if (Objects.nonNull(commentDto.getBody())) {
+                        comment.setBody(commentDto.getBody());
+                    }
                     return commentRepository.save(comment);
                 }).orElseThrow(() -> new CommentNotFoundException(id));
     }
 
-    public void delete(String id) {
+    public void delete(Long id) {
         commentRepository.deleteById(id);
     }
 

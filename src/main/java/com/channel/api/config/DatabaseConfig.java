@@ -15,11 +15,16 @@ class DatabaseConfig {
     private static final Logger log = LoggerFactory.getLogger(DatabaseConfig.class);
 
     @Bean
-    CommandLineRunner initDatabase(PostRepository repository) {
+    CommandLineRunner initDatabase(PostRepository postRepository) {
 
         return args -> {
             log.info("Preloading "
-                    + repository.save(new Post("Welcome to CHANNEL.", "This is an initial preloaded post.")));
+                    + postRepository.save(new Post("Welcome to CHANNEL.", "This is the first preloaded post.")));
+            log.info("Preloading "
+                    + postRepository.save(new Post("Welcome to CHANNEL.", "This is the second preloaded post.")));
+            log.info("Preloading "
+                    + postRepository.save(new Post("Welcome to CHANNEL.", "This is the third preloaded post.")));
+
         };
     }
 }
