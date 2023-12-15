@@ -1,11 +1,9 @@
-package com.channel.api.repository;
-
-import java.util.List;
+package com.channel.channelapi.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.channel.api.model.Comment;
+import com.channel.channelapi.model.Comment;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findByPostId(Long id);
+    
 }

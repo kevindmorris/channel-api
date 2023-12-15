@@ -1,10 +1,11 @@
-package com.channel.api.model;
+package com.channel.channelapi.model;
 
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,11 +16,11 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Table(name = "POSTS")
+@Table(name = "CHANNELS")
 @Entity
 @Getter
 @Setter
-public class Post {
+public class Channel {
 
     @Column(nullable = false)
     @Id
@@ -28,28 +29,28 @@ public class Post {
 
     @Column(nullable = false)
     @CreationTimestamp
-    private Instant creationDate;
+    private Instant createdDate;
+
+    @Column(nullable = false)
+    @UpdateTimestamp
+    private Instant updatedDate;
 
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private String body;
+    @OneToMany(mappedBy = "channel", orphanRemoval = true)
+    private Set<Post> posts = new HashSet<>();
 
-    @OneToMany(mappedBy = "post")
-    private Set<Comment> comments = new HashSet<>();
-
-    public void addComment(Comment comment) {
-        this.comments.add(comment);
-        comment.setPost(this);
+    public void addPost(Post post) {
+        this.posts.add(post);
+        post.setChannel(this);
     }
 
-    public Post() {
+    public Channel() {
     }
 
-    public Post(String title, String body) {
+    public Channel(String title) {
         this.title = title;
-        this.body = body;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.channel.api.config;
+package com.channel.channelapi.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

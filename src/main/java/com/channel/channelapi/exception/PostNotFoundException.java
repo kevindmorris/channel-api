@@ -1,4 +1,4 @@
-package com.channel.api.exception;
+package com.channel.channelapi.exception;
 
 public class PostNotFoundException extends RuntimeException {
 

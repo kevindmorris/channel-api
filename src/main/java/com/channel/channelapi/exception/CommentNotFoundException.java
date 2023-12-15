@@ -1,9 +1,9 @@
-package com.channel.api.exception;
+package com.channel.channelapi.exception;
 
 public class CommentNotFoundException extends RuntimeException {
 
     public CommentNotFoundException(Long id) {
-        super("Could not find post " + id);
+        super("Could not find comment " + id);
     }
 
 }

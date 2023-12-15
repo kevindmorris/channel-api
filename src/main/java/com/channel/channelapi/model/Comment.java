@@ -1,8 +1,9 @@
-package com.channel.api.model;
+package com.channel.channelapi.model;
 
 import java.time.Instant;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,10 +28,14 @@ public class Comment {
 
     @Column(nullable = false)
     @CreationTimestamp
-    private Instant creationDate;
+    private Instant createdDate;
 
     @Column(nullable = false)
-    private String body;
+    @UpdateTimestamp
+    private Instant updatedDate;
+
+    @Column(nullable = false)
+    private String content;
 
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
@@ -39,8 +44,8 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(String body, Post post) {
-        this.body = body;
+    public Comment(String content, Post post) {
+        this.content = content;
         this.post = post;
     }
 
