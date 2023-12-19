@@ -6,12 +6,10 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.channel.channelapi.dto.CommentDto;
 import com.channel.channelapi.dto.PostDto;
 import com.channel.channelapi.exception.PostNotFoundException;
-import com.channel.channelapi.model.Comment;
+import com.channel.channelapi.model.Channel;
 import com.channel.channelapi.model.Post;
-import com.channel.channelapi.repository.CommentRepository;
 import com.channel.channelapi.repository.PostRepository;
 
 @Service
@@ -20,12 +18,11 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
     @Autowired
-    private CommentRepository commentRepository;
+    private ChannelService channelService;
 
-    public Post createComment(Long id, CommentDto comment) {
-        Post post = getPost(id);
-        commentRepository.save(new Comment(comment.getContent(), post));
-        return post;
+    public Post createPost(Long id, PostDto post) {
+        Channel channel = channelService.getChannel(id);
+        return postRepository.save(new Post(post.getContent(), channel));
     }
 
     public List<Post> getAllPosts() {

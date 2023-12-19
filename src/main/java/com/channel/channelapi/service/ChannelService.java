@@ -7,29 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.channel.channelapi.dto.ChannelDto;
-import com.channel.channelapi.dto.PostDto;
 import com.channel.channelapi.exception.ChannelNotFoundException;
 import com.channel.channelapi.model.Channel;
-import com.channel.channelapi.model.Post;
 import com.channel.channelapi.repository.ChannelRepository;
-import com.channel.channelapi.repository.PostRepository;
 
 @Service
 public class ChannelService {
 
     @Autowired
     private ChannelRepository channelRepository;
-    @Autowired
-    private PostRepository postRepository;
 
     public Channel createChannel(ChannelDto channel) {
         return channelRepository.save(new Channel(channel.getTitle()));
-    }
-
-    public Channel createPost(Long id, PostDto post) {
-        Channel channel = getChannel(id);
-        postRepository.save(new Post(post.getContent(), channel));
-        return channel;
     }
 
     public List<Channel> getAllChannels() {

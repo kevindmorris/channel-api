@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.channel.channelapi.dto.CommentDto;
 import com.channel.channelapi.exception.CommentNotFoundException;
 import com.channel.channelapi.model.Comment;
+import com.channel.channelapi.model.Post;
 import com.channel.channelapi.repository.CommentRepository;
 
 @Service
@@ -15,6 +16,13 @@ public class CommentService {
 
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private PostService postService;
+
+    public Comment createComment(Long id, CommentDto comment) {
+        Post post = postService.getPost(id);
+        return commentRepository.save(new Comment(comment.getContent(), post));
+    }
 
     public Comment getComment(Long id) {
         return commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
