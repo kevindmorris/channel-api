@@ -1,45 +1,21 @@
 package com.channel.channelapi.service;
 
-import java.util.Objects;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.List;
 
 import com.channel.channelapi.dto.CommentDto;
-import com.channel.channelapi.exception.CommentNotFoundException;
+import com.channel.channelapi.exception.BaseException;
 import com.channel.channelapi.model.Comment;
-import com.channel.channelapi.model.Post;
-import com.channel.channelapi.repository.CommentRepository;
 
-@Service
-public class CommentService {
+public interface CommentService {
 
-    @Autowired
-    private CommentRepository commentRepository;
-    @Autowired
-    private PostService postService;
+    public Comment createComment(Long postId, CommentDto e) throws BaseException;
 
-    public Comment createComment(Long id, CommentDto comment) {
-        Post post = postService.getPost(id);
-        return commentRepository.save(new Comment(comment.getContent(), post));
-    }
+    public Comment getComment(Long commentId) throws BaseException;
 
-    public Comment getComment(Long id) {
-        return commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
-    }
+    public List<Comment> getCommentsByPost(Long postId) throws BaseException;
 
-    public Comment updateComment(Long id, CommentDto newComment) {
-        return commentRepository.findById(id)
-                .map(comment -> {
-                    if (Objects.nonNull(newComment.getContent())) {
-                        comment.setContent(newComment.getContent());
-                    }
-                    return commentRepository.save(comment);
-                }).orElseThrow(() -> new CommentNotFoundException(id));
-    }
+    public Comment updateComment(Long commentId, CommentDto e) throws BaseException;
 
-    public void deleteComment(Long id) {
-        commentRepository.deleteById(id);
-    }
+    public void deleteComment(Long commentId) throws BaseException;
 
 }

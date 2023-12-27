@@ -19,16 +19,14 @@ public class ChannelDto {
     private Long id;
     private Instant createdDate;
     private Instant updatedDate;
-    private String title;
+    private String content;
     private Set<PostDto> posts;
     private Integer numPosts;
 
     public static ChannelDto toBasic(Channel channel) {
         ChannelDto dto = new ChannelDto();
         dto.setId(channel.getId());
-        dto.setCreatedDate(channel.getCreatedDate());
-        dto.setUpdatedDate(channel.getUpdatedDate());
-        dto.setTitle(channel.getTitle());
+        dto.setContent(channel.getContent());
         dto.setNumPosts(channel.getPosts().size());
         return dto;
     }
@@ -38,9 +36,8 @@ public class ChannelDto {
         dto.setId(channel.getId());
         dto.setCreatedDate(channel.getCreatedDate());
         dto.setUpdatedDate(channel.getUpdatedDate());
-        dto.setTitle(channel.getTitle());
+        dto.setContent(channel.getContent());
         dto.setPosts(channel.getPosts().stream().map(PostDto::toBasic).collect(Collectors.toSet()));
-        dto.setNumPosts(channel.getPosts().size());
         return dto;
     }
 

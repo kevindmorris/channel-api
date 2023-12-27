@@ -27,10 +27,9 @@ public class PostDto {
     public static PostDto toBasic(Post post) {
         PostDto dto = new PostDto();
         dto.setId(post.getId());
-        dto.setCreatedDate(post.getCreatedDate());
-        dto.setUpdatedDate(post.getUpdatedDate());
         dto.setContent(post.getContent());
         dto.setNumComments(post.getComments().size());
+        dto.setChannel(ChannelDto.toBasic(post.getChannel()));
         return dto;
     }
 
@@ -42,7 +41,6 @@ public class PostDto {
         dto.setContent(post.getContent());
         dto.setChannel(ChannelDto.toBasic(post.getChannel()));
         dto.setComments(post.getComments().stream().map(CommentDto::toBasic).collect(Collectors.toSet()));
-        dto.setNumComments(post.getComments().size());
         return dto;
     }
 

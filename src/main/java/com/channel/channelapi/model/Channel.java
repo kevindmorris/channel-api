@@ -36,7 +36,7 @@ public class Channel {
     private Instant updatedDate;
 
     @Column(nullable = false)
-    private String title;
+    private String content;
 
     @OneToMany(mappedBy = "channel", orphanRemoval = true)
     private Set<Post> posts = new HashSet<>();
@@ -49,8 +49,8 @@ public class Channel {
     public Channel() {
     }
 
-    public Channel(String title) {
-        this.title = title;
+    public Channel(String content) {
+        this.content = content;
     }
 
 }

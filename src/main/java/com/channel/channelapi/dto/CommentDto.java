@@ -23,9 +23,8 @@ public class CommentDto {
     public static CommentDto toBasic(Comment comment) {
         CommentDto dto = new CommentDto();
         dto.setId(comment.getId());
-        dto.setCreatedDate(comment.getCreatedDate());
-        dto.setUpdatedDate(comment.getUpdatedDate());
         dto.setContent(comment.getContent());
+        dto.setPost(PostDto.toBasic(comment.getPost()));
         return dto;
     }
 
