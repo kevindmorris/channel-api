@@ -18,4 +18,6 @@ public interface CommentService {
 
     public void deleteComment(Long commentId) throws BaseException;
 
+    public void deleteCommentsByPost(Long channelId) throws BaseException;
+
 }

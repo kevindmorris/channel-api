@@ -31,9 +31,8 @@ public class CommentController {
 
     // POST
     @Operation(summary = "Create a comment.")
-    @PostMapping("/channels/{channelId}/posts/{postId}/comments")
+    @PostMapping("posts/{postId}/comments")
     public ResponseEntity<CommentDto> createComment(
-            @PathVariable Long channelId,
             @PathVariable Long postId,
             @RequestBody CommentDto comment) throws BaseException {
         return ResponseEntity.ok(CommentDto.toComplex(commentService.createComment(postId, comment)));
@@ -41,15 +40,15 @@ public class CommentController {
 
     // GET
     @Operation(summary = "Get a comment.")
-    @GetMapping("/channels/{channelId}/posts/{postId}/comments/{commentId}")
-    public ResponseEntity<CommentDto> getComment(@PathVariable Long channelId, @PathVariable Long postId,
+    @GetMapping("/comments/{commentId}")
+    public ResponseEntity<CommentDto> getComment(
             @PathVariable Long commentId) throws BaseException {
         return ResponseEntity.ok(CommentDto.toComplex(commentService.getComment(commentId)));
     }
 
     @Operation(summary = "Get a posts's comments.")
-    @GetMapping("/channels/{channelId}/posts/{postId}/comments")
-    public ResponseEntity<List<CommentDto>> getPost(@PathVariable Long channelId, @PathVariable Long postId)
+    @GetMapping("/posts/{postId}/comments")
+    public ResponseEntity<List<CommentDto>> getPost(@PathVariable Long postId)
             throws BaseException {
         return ResponseEntity.ok(
                 commentService.getCommentsByPost(postId).stream().map(CommentDto::toComplex)
@@ -58,18 +57,24 @@ public class CommentController {
 
     // PUT
     @Operation(summary = "Update a comment.")
-    @PutMapping("/channels/{channelId}/posts/{postId}/comments/{commentId}")
-    public ResponseEntity<CommentDto> updateComment(@PathVariable Long channelId, @PathVariable Long postId,
+    @PutMapping("/comments/{commentId}")
+    public ResponseEntity<CommentDto> updateComment(
             @PathVariable Long commentId, @RequestBody CommentDto comment) throws BaseException {
         return ResponseEntity.ok(CommentDto.toComplex(commentService.updateComment(commentId, comment)));
     }
 
     // DELETE
     @Operation(summary = "Delete a comment.")
-    @DeleteMapping("/channels/{channelId}/posts/{postId}/comments/{commentId}")
-    public void deleteComment(@PathVariable Long channelId, @PathVariable Long postId,
+    @DeleteMapping("/comments/{commentId}")
+    public void deleteComment(
             @PathVariable Long commentId) throws BaseException {
         commentService.deleteComment(commentId);
+    }
+
+    @Operation(summary = "Delete a posts's comments.")
+    @DeleteMapping("/posts/{postId}/comments")
+    public void deleteCommentsByPost(@PathVariable Long postId) throws BaseException {
+        commentService.deleteCommentsByPost(postId);
     }
 
 }

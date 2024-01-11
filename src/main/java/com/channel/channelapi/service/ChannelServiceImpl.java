@@ -36,10 +36,10 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Channel updateChannel(Long channelId, ChannelDto e) throws BaseException {
-        Optional<Channel> optional = channelRepository.findById(e.getId());
+        Optional<Channel> optional = channelRepository.findById(channelId);
 
         if (optional.isEmpty())
-            throw new BaseException("no channel found with that id :" + e.getId());
+            throw new BaseException("no channel found with that id :" + channelId);
 
         Channel channel = optional.get();
 

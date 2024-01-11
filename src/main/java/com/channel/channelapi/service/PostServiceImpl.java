@@ -41,10 +41,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post updatePost(Long postId, PostDto e) throws BaseException {
-        Optional<Post> optional = postRepository.findById(e.getId());
+        Optional<Post> optional = postRepository.findById(postId);
 
         if (optional.isEmpty())
-            throw new BaseException("no post found with that id :" + e.getId());
+            throw new BaseException("no post found with that id :" + postId);
 
         Post post = optional.get();
 
@@ -62,6 +62,11 @@ public class PostServiceImpl implements PostService {
             throw new BaseException("no post found with that id :" + postId);
 
         postRepository.deleteById(postId);
+    }
+
+    @Override
+    public void deletePostsByChannel(Long channelId) throws BaseException {
+        postRepository.deleteByChannelId(channelId);
     }
 
 }

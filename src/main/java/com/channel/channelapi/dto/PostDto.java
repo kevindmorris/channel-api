@@ -40,6 +40,7 @@ public class PostDto {
         dto.setUpdatedDate(post.getUpdatedDate());
         dto.setContent(post.getContent());
         dto.setChannel(ChannelDto.toBasic(post.getChannel()));
+        dto.setNumComments(post.getComments().size());
         dto.setComments(post.getComments().stream().map(CommentDto::toBasic).collect(Collectors.toSet()));
         return dto;
     }

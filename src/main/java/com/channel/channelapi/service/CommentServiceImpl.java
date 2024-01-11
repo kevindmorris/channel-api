@@ -41,10 +41,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment updateComment(Long commentId, CommentDto e) throws BaseException {
-        Optional<Comment> optional = commentRepository.findById(e.getId());
+        Optional<Comment> optional = commentRepository.findById(commentId);
 
         if (optional.isEmpty())
-            throw new BaseException("no comment found with that id :" + e.getId());
+            throw new BaseException("no comment found with that id :" + commentId);
 
         Comment comment = optional.get();
 
@@ -62,6 +62,11 @@ public class CommentServiceImpl implements CommentService {
             throw new BaseException("no comment found with that id :" + commentId);
 
         commentRepository.deleteById(commentId);
+    }
+
+    @Override
+    public void deleteCommentsByPost(Long postId) throws BaseException {
+        commentRepository.deleteByPostId(postId);
     }
 
 }

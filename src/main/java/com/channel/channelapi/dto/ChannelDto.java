@@ -37,6 +37,7 @@ public class ChannelDto {
         dto.setCreatedDate(channel.getCreatedDate());
         dto.setUpdatedDate(channel.getUpdatedDate());
         dto.setContent(channel.getContent());
+        dto.setNumPosts(channel.getPosts().size());
         dto.setPosts(channel.getPosts().stream().map(PostDto::toBasic).collect(Collectors.toSet()));
         return dto;
     }

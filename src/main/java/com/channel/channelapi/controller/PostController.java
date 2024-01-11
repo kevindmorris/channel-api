@@ -40,15 +40,15 @@ public class PostController {
 
     // GET
     @Operation(summary = "Get a post.")
-    @GetMapping("/channels/{channelId}/posts/{postId}")
-    public ResponseEntity<PostDto> getPost(@PathVariable Long channelId, @PathVariable Long postId)
+    @GetMapping("/posts/{postId}")
+    public ResponseEntity<PostDto> getPost(@PathVariable Long postId)
             throws BaseException {
         return ResponseEntity.ok(PostDto.toComplex(postService.getPost(postId)));
     }
 
     @Operation(summary = "Get a channel's post.")
     @GetMapping("/channels/{channelId}/posts")
-    public ResponseEntity<List<PostDto>> getPost(@PathVariable Long channelId)
+    public ResponseEntity<List<PostDto>> getPostsByChannel(@PathVariable Long channelId)
             throws BaseException {
         return ResponseEntity.ok(
                 postService.getPostsByChannel(channelId).stream().map(PostDto::toBasic).collect(Collectors.toList()));
@@ -56,17 +56,23 @@ public class PostController {
 
     // PUT
     @Operation(summary = "Update a post.")
-    @PutMapping("/channels/{channelId}/posts/{postId}")
-    public ResponseEntity<PostDto> updatePost(@PathVariable Long channelId, @PathVariable Long postId,
+    @PutMapping("/posts/{postId}")
+    public ResponseEntity<PostDto> updatePost(@PathVariable Long postId,
             @RequestBody PostDto post) throws BaseException {
         return ResponseEntity.ok(PostDto.toComplex(postService.updatePost(postId, post)));
     }
 
     // DELETE
     @Operation(summary = "Delete a post.")
-    @DeleteMapping("/channels/{channelId}/posts/{postId}")
-    public void deletePost(@PathVariable Long channelId, @PathVariable Long postId) throws BaseException {
+    @DeleteMapping("/posts/{postId}")
+    public void deletePost(@PathVariable Long postId) throws BaseException {
         postService.deletePost(postId);
+    }
+
+    @Operation(summary = "Delete a channel's posts.")
+    @DeleteMapping("/channels/{channelId}/posts")
+    public void deletePostsByChannel(@PathVariable Long channelId) throws BaseException {
+        postService.deletePostsByChannel(channelId);
     }
 
 }

@@ -18,4 +18,6 @@ public interface PostService {
 
     public void deletePost(Long postId) throws BaseException;
 
+    public void deletePostsByChannel(Long channelId) throws BaseException;
+
 }
