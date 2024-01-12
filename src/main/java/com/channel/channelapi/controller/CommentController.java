@@ -3,6 +3,8 @@ package com.channel.channelapi.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,13 +31,23 @@ public class CommentController {
     @Autowired
     CommentService commentService;
 
+    private static Logger logger = LoggerFactory.getLogger(CommentController.class);
+
     // POST
     @Operation(summary = "Create a comment.")
-    @PostMapping("posts/{postId}/comments")
+    @PostMapping("/posts/{postId}/comments")
     public ResponseEntity<CommentDto> createComment(
             @PathVariable Long postId,
             @RequestBody CommentDto comment) throws BaseException {
-        return ResponseEntity.ok(CommentDto.toComplex(commentService.createComment(postId, comment)));
+        try {
+            logger.info(String.format("POST /posts/%s/comments", postId));
+            CommentDto res = CommentDto.toComplex(commentService.createComment(postId, comment));
+            logger.info(String.format("comment CREATED id: %s", res.getId()));
+            return ResponseEntity.ok(res);
+        } catch (Exception ex) {
+            logger.warn("Exception: " + ex.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     // GET
@@ -43,16 +55,32 @@ public class CommentController {
     @GetMapping("/comments/{commentId}")
     public ResponseEntity<CommentDto> getComment(
             @PathVariable Long commentId) throws BaseException {
-        return ResponseEntity.ok(CommentDto.toComplex(commentService.getComment(commentId)));
+        try {
+            logger.info(String.format("GET /comments/%s", commentId));
+            CommentDto res = CommentDto.toComplex(commentService.getComment(commentId));
+            logger.info(String.format("comment RETRIEVED id: %s", res.getId()));
+            return ResponseEntity.ok(res);
+        } catch (Exception ex) {
+            logger.warn("Exception: " + ex.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @Operation(summary = "Get a posts's comments.")
     @GetMapping("/posts/{postId}/comments")
     public ResponseEntity<List<CommentDto>> getPost(@PathVariable Long postId)
             throws BaseException {
-        return ResponseEntity.ok(
-                commentService.getCommentsByPost(postId).stream().map(CommentDto::toComplex)
-                        .collect(Collectors.toList()));
+        try {
+            logger.info(String.format("GET /posts/%s/comments", postId));
+            List<CommentDto> res = commentService.getCommentsByPost(postId).stream().map(CommentDto::toComplex)
+                    .collect(Collectors.toList());
+            logger.info(String.format("comments RETRIEVED"));
+            return ResponseEntity
+                    .ok(res);
+        } catch (Exception ex) {
+            logger.warn("Exception: " + ex.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     // PUT
@@ -60,7 +88,15 @@ public class CommentController {
     @PutMapping("/comments/{commentId}")
     public ResponseEntity<CommentDto> updateComment(
             @PathVariable Long commentId, @RequestBody CommentDto comment) throws BaseException {
-        return ResponseEntity.ok(CommentDto.toComplex(commentService.updateComment(commentId, comment)));
+        try {
+            logger.info(String.format("PUT /comments/%s", commentId));
+            CommentDto res = CommentDto.toComplex(commentService.updateComment(commentId, comment));
+            logger.info(String.format("comment UPDATED id: %s", res.getId()));
+            return ResponseEntity.ok(res);
+        } catch (Exception ex) {
+            logger.warn("Exception: " + ex.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     // DELETE
@@ -68,13 +104,26 @@ public class CommentController {
     @DeleteMapping("/comments/{commentId}")
     public void deleteComment(
             @PathVariable Long commentId) throws BaseException {
-        commentService.deleteComment(commentId);
+        try {
+            logger.info(String.format("DELETE /comments/%s", commentId));
+            commentService.deleteComment(commentId);
+            logger.info(String.format("comment DELETED id: %s", commentId));
+        } catch (Exception ex) {
+            logger.warn("Exception: " + ex.getMessage());
+        }
     }
 
     @Operation(summary = "Delete a posts's comments.")
     @DeleteMapping("/posts/{postId}/comments")
     public void deleteCommentsByPost(@PathVariable Long postId) throws BaseException {
-        commentService.deleteCommentsByPost(postId);
+        try {
+            logger.info(String.format("DELETE /posts/%s/comments", postId));
+            commentService.deleteCommentsByPost(postId);
+            logger.info(String.format("comment DELETED id: %s", postId));
+        } catch (Exception ex) {
+            logger.warn("Exception: " + ex.getMessage());
+        }
+
     }
 
 }
