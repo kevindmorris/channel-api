@@ -15,13 +15,19 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Table(name = "POSTS")
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Post {
 
     @Column(nullable = false)
@@ -45,19 +51,11 @@ public class Post {
     private Channel channel;
 
     @OneToMany(mappedBy = "post", orphanRemoval = true)
-    private Set<Comment> comments = new HashSet<>();
+    private final Set<Comment> comments = new HashSet<>();
 
     public void addComment(Comment comment) {
         this.comments.add(comment);
         comment.setPost(this);
-    }
-
-    public Post() {
-    }
-
-    public Post(String content, Channel channel) {
-        this.content = content;
-        this.channel = channel;
     }
 
 }

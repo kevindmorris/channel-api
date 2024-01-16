@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.channel.channelapi.dto.ChannelDto;
 import com.channel.channelapi.exception.BaseException;
 import com.channel.channelapi.model.Channel;
 import com.channel.channelapi.repository.ChannelRepository;
@@ -19,13 +18,8 @@ public class ChannelServiceImpl implements ChannelService {
     private ChannelRepository channelRepository;
 
     @Override
-    public Channel createChannel(ChannelDto e) throws BaseException {
-        return channelRepository.save(new Channel(e.getContent()));
-    }
-
-    @Override
-    public List<Channel> getChannels() throws BaseException {
-        return channelRepository.findAll();
+    public Channel createChannel(Channel e) throws BaseException {
+        return channelRepository.save(e);
     }
 
     @Override
@@ -35,7 +29,12 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Channel updateChannel(Long channelId, ChannelDto e) throws BaseException {
+    public List<Channel> getChannels() throws BaseException {
+        return channelRepository.findAll();
+    }
+
+    @Override
+    public Channel updateChannel(Long channelId, Channel e) throws BaseException {
         Optional<Channel> optional = channelRepository.findById(channelId);
 
         if (optional.isEmpty())
@@ -57,6 +56,11 @@ public class ChannelServiceImpl implements ChannelService {
             throw new BaseException("no channel found with that id :" + channelId);
 
         channelRepository.deleteById(channelId);
+    }
+
+    @Override
+    public void deleteChannels() throws BaseException {
+        channelRepository.deleteAll();
     }
 
 }

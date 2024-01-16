@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.channel.channelapi.dto.ChannelDto;
 import com.channel.channelapi.exception.BaseException;
+import com.channel.channelapi.model.Channel;
 import com.channel.channelapi.service.ChannelService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +37,7 @@ public class ChannelController {
     // POST
     @Operation(summary = "Create a channel.")
     @PostMapping("/channels")
-    public ResponseEntity<ChannelDto> createChannel(@RequestBody ChannelDto channel) throws BaseException {
+    public ResponseEntity<ChannelDto> createChannel(@RequestBody Channel channel) throws BaseException {
         try {
             logger.info("POST /channels");
             ChannelDto res = ChannelDto.toComplex(channelService.createChannel(channel));
@@ -82,7 +83,7 @@ public class ChannelController {
     // PUT
     @Operation(summary = "Update a channel.")
     @PutMapping("channels/{channelId}")
-    public ResponseEntity<ChannelDto> updateChannel(@PathVariable Long channelId, @RequestBody ChannelDto channel)
+    public ResponseEntity<ChannelDto> updateChannel(@PathVariable Long channelId, @RequestBody Channel channel)
             throws BaseException {
         try {
             logger.info(String.format("PUT /channels/%s", channelId));
@@ -103,6 +104,18 @@ public class ChannelController {
             logger.info(String.format("DELETE /channels/%s", channelId));
             channelService.deleteChannel(channelId);
             logger.info(String.format("channel DELETED id: %s", channelId));
+        } catch (Exception ex) {
+            logger.warn("Exception: " + ex.getMessage());
+        }
+    }
+
+    @Operation(summary = "Delete all channels.")
+    @DeleteMapping("channels")
+    public void deleteChannels() throws BaseException {
+        try {
+            logger.info("DELETE /channels");
+            channelService.deleteChannels();
+            logger.info("channels DELETED");
         } catch (Exception ex) {
             logger.warn("Exception: " + ex.getMessage());
         }

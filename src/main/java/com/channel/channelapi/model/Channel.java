@@ -13,13 +13,19 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Table(name = "CHANNELS")
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Channel {
 
     @Column(nullable = false)
@@ -39,18 +45,11 @@ public class Channel {
     private String content;
 
     @OneToMany(mappedBy = "channel", orphanRemoval = true)
-    private Set<Post> posts = new HashSet<>();
+    private final Set<Post> posts = new HashSet<>();
 
     public void addPost(Post post) {
         this.posts.add(post);
         post.setChannel(this);
-    }
-
-    public Channel() {
-    }
-
-    public Channel(String content) {
-        this.content = content;
     }
 
 }

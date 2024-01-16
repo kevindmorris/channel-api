@@ -7,25 +7,26 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.channel.channelapi.dto.CommentDto;
 import com.channel.channelapi.exception.BaseException;
 import com.channel.channelapi.model.Comment;
 import com.channel.channelapi.model.Post;
 import com.channel.channelapi.repository.CommentRepository;
+import com.channel.channelapi.repository.PostRepository;
 
 @Service
 public class CommentServiceImpl implements CommentService {
 
     @Autowired
-    private CommentRepository commentRepository;
+    private PostRepository postRepository;
     @Autowired
-    private PostService postService;
+    private CommentRepository commentRepository;
 
     @Override
-    public Comment createComment(Long postId, CommentDto e) throws BaseException {
-        Post post = postService.getPost(postId);
+    public Comment createComment(Long postId, Comment e) throws BaseException {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new BaseException("no post found with that id : " + postId));
 
-        return commentRepository.save(new Comment(e.getContent(), post));
+        return commentRepository.save(Comment.builder().content(e.getContent()).post(post).build());
     }
 
     @Override
@@ -40,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment updateComment(Long commentId, CommentDto e) throws BaseException {
+    public Comment updateComment(Long commentId, Comment e) throws BaseException {
         Optional<Comment> optional = commentRepository.findById(commentId);
 
         if (optional.isEmpty())

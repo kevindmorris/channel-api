@@ -26,6 +26,7 @@ public class ChannelDto {
     public static ChannelDto toBasic(Channel channel) {
         ChannelDto dto = new ChannelDto();
         dto.setId(channel.getId());
+        dto.setCreatedDate(channel.getCreatedDate());
         dto.setContent(channel.getContent());
         dto.setNumPosts(channel.getPosts().size());
         return dto;

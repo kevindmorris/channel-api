@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.channel.channelapi.dto.PostDto;
 import com.channel.channelapi.exception.BaseException;
+import com.channel.channelapi.model.Post;
 import com.channel.channelapi.service.PostService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,7 +39,7 @@ public class PostController {
     @PostMapping("/channels/{channelId}/posts")
     public ResponseEntity<PostDto> createPost(
             @PathVariable Long channelId,
-            @RequestBody PostDto post) throws BaseException {
+            @RequestBody Post post) throws BaseException {
         try {
             logger.info(String.format("POST /channels/%s/posts", channelId));
             PostDto res = PostDto.toComplex(postService.createPost(channelId, post));
@@ -87,7 +88,7 @@ public class PostController {
     @Operation(summary = "Update a post.")
     @PutMapping("/posts/{postId}")
     public ResponseEntity<PostDto> updatePost(
-            @PathVariable Long postId, @RequestBody PostDto post) throws BaseException {
+            @PathVariable Long postId, @RequestBody Post post) throws BaseException {
         try {
             logger.info(String.format("PUT /posts/%s", postId));
             PostDto res = PostDto.toComplex(postService.updatePost(postId, post));

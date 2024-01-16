@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.channel.channelapi.dto.CommentDto;
 import com.channel.channelapi.exception.BaseException;
+import com.channel.channelapi.model.Comment;
 import com.channel.channelapi.service.CommentService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,7 +39,7 @@ public class CommentController {
     @PostMapping("/posts/{postId}/comments")
     public ResponseEntity<CommentDto> createComment(
             @PathVariable Long postId,
-            @RequestBody CommentDto comment) throws BaseException {
+            @RequestBody Comment comment) throws BaseException {
         try {
             logger.info(String.format("POST /posts/%s/comments", postId));
             CommentDto res = CommentDto.toComplex(commentService.createComment(postId, comment));
@@ -87,7 +88,7 @@ public class CommentController {
     @Operation(summary = "Update a comment.")
     @PutMapping("/comments/{commentId}")
     public ResponseEntity<CommentDto> updateComment(
-            @PathVariable Long commentId, @RequestBody CommentDto comment) throws BaseException {
+            @PathVariable Long commentId, @RequestBody Comment comment) throws BaseException {
         try {
             logger.info(String.format("PUT /comments/%s", commentId));
             CommentDto res = CommentDto.toComplex(commentService.updateComment(commentId, comment));

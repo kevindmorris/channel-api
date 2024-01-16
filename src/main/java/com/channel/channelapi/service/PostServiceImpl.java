@@ -7,25 +7,26 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.channel.channelapi.dto.PostDto;
 import com.channel.channelapi.exception.BaseException;
 import com.channel.channelapi.model.Channel;
 import com.channel.channelapi.model.Post;
+import com.channel.channelapi.repository.ChannelRepository;
 import com.channel.channelapi.repository.PostRepository;
 
 @Service
 public class PostServiceImpl implements PostService {
 
     @Autowired
-    private PostRepository postRepository;
+    private ChannelRepository channelRepository;
     @Autowired
-    private ChannelService channelService;
+    private PostRepository postRepository;
 
     @Override
-    public Post createPost(Long channelId, PostDto e) throws BaseException {
-        Channel channel = channelService.getChannel(channelId);
+    public Post createPost(Long channelId, Post e) throws BaseException {
+        Channel channel = channelRepository.findById(channelId)
+                .orElseThrow(() -> new BaseException("no channel found with that id : " + channelId));
 
-        return postRepository.save(new Post(e.getContent(), channel));
+        return postRepository.save(Post.builder().content(e.getContent()).channel(channel).build());
     }
 
     @Override
@@ -40,7 +41,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post updatePost(Long postId, PostDto e) throws BaseException {
+    public Post updatePost(Long postId, Post e) throws BaseException {
         Optional<Post> optional = postRepository.findById(postId);
 
         if (optional.isEmpty())
