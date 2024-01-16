@@ -27,6 +27,7 @@ public class PostDto {
     public static PostDto toBasic(Post post) {
         PostDto dto = new PostDto();
         dto.setId(post.getId());
+        dto.setCreatedDate(post.getCreatedDate());
         dto.setContent(post.getContent());
         dto.setNumComments(post.getComments().size());
         dto.setChannel(ChannelDto.toBasic(post.getChannel()));
